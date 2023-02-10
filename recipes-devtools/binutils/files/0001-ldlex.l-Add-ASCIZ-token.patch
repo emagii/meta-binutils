@@ -1,21 +1,21 @@
-From 0d004142f0582d3a91512fa4f21769fbe06dde26 Mon Sep 17 00:00:00 2001
+From 4d9d27d23d651da7f6dafcd9c1cf9e59c59ea43a Mon Sep 17 00:00:00 2001
 From: Ulf Samuelsson <ulf@emagii.com>
-Date: Tue, 7 Feb 2023 19:20:03 +0100
-Subject: [PATCH 1/4] ldlex.l: Add ASCII and ASCIZ commands
+Date: Fri, 10 Feb 2023 14:29:07 +0100
+Subject: [PATCH 1/4] ldlex.l: Add ASCIZ token
 
+Signed-off-by: Ulf Samuelsson <ulf@emagii.com>
 ---
- ld/ldlex.l | 2 ++
- 1 file changed, 2 insertions(+)
+ ld/ldlex.l | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/ld/ldlex.l b/ld/ldlex.l
-index 78db16e3..3ef33d2e 100644
+index cf596530b20..32336cf0be2 100644
 --- a/ld/ldlex.l
 +++ b/ld/ldlex.l
-@@ -309,6 +309,8 @@ V_IDENTIFIER [*?.$_a-zA-Z\[\]\-\!\^\\]([*?.$_a-zA-Z0-9\[\]\-\!\^\\]|::)*
+@@ -309,6 +309,7 @@ V_IDENTIFIER [*?.$_a-zA-Z\[\]\-\!\^\\]([*?.$_a-zA-Z0-9\[\]\-\!\^\\]|::)*
  <WILD>"LONG"				{ RTOKEN(LONG); }
  <WILD>"SHORT"				{ RTOKEN(SHORT); }
  <WILD>"BYTE"				{ RTOKEN(BYTE); }
-+<WILD>"ASCII"				{ RTOKEN(ASCII); }
 +<WILD>"ASCIZ"				{ RTOKEN(ASCIZ); }
  <SCRIPT>"NOFLOAT"			{ RTOKEN(NOFLOAT); }
  <SCRIPT,EXPRESSION>"NOCROSSREFS"	{ RTOKEN(NOCROSSREFS); }
