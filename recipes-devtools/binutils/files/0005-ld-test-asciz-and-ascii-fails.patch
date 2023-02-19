@@ -1,0 +1,93 @@
+From 18a713ce14cacf7f927e25fe101b88906137997d Mon Sep 17 00:00:00 2001
+From: Alan Modra <amodra@gmail.com>
+Date: Fri, 17 Feb 2023 13:50:18 +1030
+Subject: [PATCH 05/13] ld test asciz and ascii fails
+
+Fix these fails:
+alpha-dec-vms  +FAIL: ld-scripts/asciz
+alpha-dec-vms  +FAIL: ld-scripts/ascii
+i386-go32  +FAIL: ld-scripts/asciz
+sh-coff  +FAIL: ld-scripts/asciz
+
+It's better to positively select targets for .section support than to
+try to exclude all targets that don't.  Make a new is_coff_format so
+we can easily select such.
+
+binutils/
+	* testsuite/lib/binutils-common.exp (is_coff_format): New.
+ld/
+	* testsuite/ld-scripts/ascii.d: Use is_elf_format and
+	is_coff_format to select targets, exclude ti coff.
+	* testsuite/ld-scripts/asciz.d: Likewise.  Accept trailing zeros.
+---
+ binutils/testsuite/lib/binutils-common.exp | 15 +++++++++++++++
+ ld/testsuite/ld-scripts/ascii.d            |  4 ++--
+ ld/testsuite/ld-scripts/asciz.d            |  6 +++---
+ 3 files changed, 20 insertions(+), 5 deletions(-)
+
+diff --git a/binutils/testsuite/lib/binutils-common.exp b/binutils/testsuite/lib/binutils-common.exp
+index 55b96980..e5365f05 100644
+--- a/binutils/testsuite/lib/binutils-common.exp
++++ b/binutils/testsuite/lib/binutils-common.exp
+@@ -114,6 +114,21 @@ proc is_pecoff_format args {
+     return 0
+ }
+ 
++# True if the object format is known to COFF or PE (but not ECOFF or XCOFF)
++#
++proc is_coff_format {} {
++    if { [is_pecoff_format]
++	 || [istarget *-*-coff*]
++	 || [istarget *-*-go32*]
++	 || [istarget *-*-msdosdjgpp*]
++	 || [istarget tic4x-*-*]
++	 || [istarget tic54x-*-*]
++	 || [istarget z8k-*-*] } {
++	return 1
++    }
++    return 0
++}
++
+ proc is_som_format {} {
+     if { ![istarget hppa*-*-*] || [istarget hppa*64*-*-*] } {
+ 	return 0;
+diff --git a/ld/testsuite/ld-scripts/ascii.d b/ld/testsuite/ld-scripts/ascii.d
+index cfc1a4cb..ff3bd328 100644
+--- a/ld/testsuite/ld-scripts/ascii.d
++++ b/ld/testsuite/ld-scripts/ascii.d
+@@ -1,8 +1,8 @@
+ #source: ascii.s
+ #ld: -T ascii.t
+ #objdump: -s -j .header
+-#notarget: [is_aout_format]
+-#skip: tic4x-*-* tic54x-*-* *-*-*ecoff *-*-macho *-*-aix*
++#target: [is_elf_format] [is_coff_format]
++#notarget: tic4x-*-* tic54x-*-*
+ 
+ .*:     file format .*
+ 
+diff --git a/ld/testsuite/ld-scripts/asciz.d b/ld/testsuite/ld-scripts/asciz.d
+index 75e3c858..38d0408b 100644
+--- a/ld/testsuite/ld-scripts/asciz.d
++++ b/ld/testsuite/ld-scripts/asciz.d
+@@ -1,8 +1,8 @@
+ #source: asciz.s
+ #ld: -T asciz.t
+ #objdump: -s -j .data
+-#notarget: [is_aout_format]
+-#skip: tic4x-*-* tic54x-*-* *-*-*ecoff *-*-macho *-*-aix*
++#target: [is_elf_format] [is_coff_format]
++#notarget: tic4x-*-* tic54x-*-*
+ 
+ .*:     file format .*
+ 
+@@ -10,5 +10,5 @@ Contents of section .data:
+  .... 54686973 20697320 61207374 72696e67  This is a string
+  .... 00546869 73206973 20616e6f 74686572  .This is another
+  .... 0a537472 696e6700 006e6f71 756f7465  .String..noquote
+- .... 7300                                 s.              
++ .... 7300[ 0]*  s.*
+ #pass
+-- 
+2.17.1
+

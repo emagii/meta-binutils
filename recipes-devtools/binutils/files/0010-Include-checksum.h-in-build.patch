@@ -1,0 +1,26 @@
+From 7462394200f7402f22ad8e4ff0cc0f5a7e1232bf Mon Sep 17 00:00:00 2001
+From: Ulf Samuelsson <ulf@emagii.com>
+Date: Sun, 19 Feb 2023 19:18:40 +0100
+Subject: [PATCH 10/13] Include checksum.h in build
+
+Signed-off-by: Ulf Samuelsson <ulf@emagii.com>
+---
+ ld/Makefile.am | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/ld/Makefile.am b/ld/Makefile.am
+index bfd03fe0..79bd5b0d 100644
+--- a/ld/Makefile.am
++++ b/ld/Makefile.am
+@@ -484,7 +484,7 @@ CFILES = ldctor.c ldemul.c ldexp.c ldfile.c ldlang.c \
+ 	mri.c ldcref.c pe-dll.c pep-dll.c ldlex-wrapper.c \
+ 	plugin.c ldbuildid.c ldelf.c ldelfgen.c
+ 
+-HFILES = ld.h ldctor.h ldemul.h ldexp.h ldfile.h \
++HFILES = checksum.h ld.h ldctor.h ldemul.h ldexp.h ldfile.h \
+ 	ldlang.h ldlex.h ldmain.h ldmisc.h ldver.h \
+ 	ldwrite.h mri.h deffile.h pe-dll.h pep-dll.h \
+ 	elf-hints-local.h plugin.h ldbuildid.h ldelf.h ldelfgen.h
+-- 
+2.17.1
+

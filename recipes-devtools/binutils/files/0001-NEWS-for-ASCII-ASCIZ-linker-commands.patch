@@ -1,0 +1,32 @@
+From af9a24edcffd4678c304146e75cacb2cb5988a53 Mon Sep 17 00:00:00 2001
+From: Ulf Samuelsson <ulf@emagii.com>
+Date: Sun, 19 Feb 2023 10:52:10 +0100
+Subject: [PATCH 01/13] NEWS for ASCII, ASCIZ linker commands
+
+Signed-off-by: Ulf Samuelsson <ulf@emagii.com>
+---
+ ld/NEWS | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/ld/NEWS b/ld/NEWS
+index dbb402d1..15cb13f2 100644
+--- a/ld/NEWS
++++ b/ld/NEWS
+@@ -1,4 +1,14 @@
+ -*- text -*-
++Changes in git
++
++* The linker script syntax has two new commands for inserting text into output
++  sections:
++    ASCII (<size>) "string"
++  This will reserve a zero filled block of <size> bytes at the current
++  location and insert "string" at the beginning of the block.  If the string
++  is too long, it will be truncated.
++    ASCIZ "string"
++  This will insert a zero-terminated string at the current location.
+ 
+ Changes in 2.38:
+ 
+-- 
+2.17.1
+
